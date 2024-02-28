@@ -183,8 +183,6 @@ def compare_players(players: list[Player],
             players_ratings.sort(key=lambda rate_info: rate_info.rating[recurse_win_ind])
 
         players_ratings.sort(key=lambda rate_info: rate_info.rating[ind])
-        print(ind)
-        print(players_ratings)
         # определение места по большинству
         win_rate = players_ratings[-1].rating[ind]
         if not (win_rate < judges_majority):
