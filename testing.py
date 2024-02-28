@@ -11,8 +11,8 @@ import main  # assuming main module contains the 'main' function
 # Pydantic model for test data
 class TestData(BaseModel):
     test_name: str
-    input_data: List[int]
-    output_data: List[int]
+    input_data: List[float]
+    output_data: List[float]
 
 
 # Function to load test data from a JSON file and validate using the Pydantic model
@@ -55,9 +55,11 @@ class TestMainProgram(unittest.TestCase):
                     main.main()
 
                     # Extract actual output data from the captured standard output
-                    actual_output_data = [int(s.strip()[-1]) for s in self.mock_stdout.getvalue().strip().split("\n")
+                    actual_output_data = [float(s.strip().split()[-1]) for s in self.mock_stdout.getvalue().strip().split("\n")
                                           if s.startswith("participant")]
-
+                    player_ids = [int(s.strip().split()[1][1]) for s in self.mock_stdout.getvalue().strip().split("\n")
+                                  if s.startswith("participant")]
+                    self.assertEqual(player_ids, [x for x in range(1, len(player_ids) + 1)])
                     # Assert that the actual output matches the expected output from the test data
                     self.assertEqual(actual_output_data, test.output_data)
 

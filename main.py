@@ -183,7 +183,8 @@ def compare_players(players: list[Player],
             players_ratings.sort(key=lambda rate_info: rate_info.rating[recurse_win_ind])
 
         players_ratings.sort(key=lambda rate_info: rate_info.rating[ind])
-
+        print(ind)
+        print(players_ratings)
         # определение места по большинству
         win_rate = players_ratings[-1].rating[ind]
         if not (win_rate < judges_majority):
@@ -192,12 +193,11 @@ def compare_players(players: list[Player],
                                               num_of_players=len(current_best.players))
             result_players_place_info.append((current_best, correct_place))
             place_counter += len(current_best.players)
-
             rating_indexes_to_delete: [int] = [-1]
             for check_for_next_best_ind in range(len(players_ratings) - 2, -1, -1):
                 next_best = players_ratings[check_for_next_best_ind]
                 next_best_rate = next_best.rating[ind]
-                if next_best_rate == win_rate:
+                if next_best_rate >= judges_majority:
                     correct_place = get_correct_place(place_counter=place_counter,
                                                       num_of_players=len(next_best.players))
                     result_players_place_info.append((next_best, correct_place))
@@ -206,6 +206,7 @@ def compare_players(players: list[Player],
 
             for index in rating_indexes_to_delete:
                 players_ratings.pop(index)
+
     return result_players_place_info
 
 
